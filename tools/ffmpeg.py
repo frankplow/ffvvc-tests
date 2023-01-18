@@ -44,7 +44,7 @@ def get_md5(input):
     cmd  = cmd + " -i " + input + " -vsync 0 -f md5 -"
     print(cmd)
     try:
-        o = subprocess.run(cmd.split(), capture_output=True, timeout = 5 * 60)
+        o = subprocess.run(cmd.split(), capture_output=True, timeout = 10 * 60)
         if o.returncode:
             print(o.stderr)
             return ""
