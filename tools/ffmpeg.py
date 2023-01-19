@@ -120,7 +120,7 @@ def submmit_files(executor, path):
     return future_to_file
 
 def test_dir(path):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         future_to_file = submmit_files(executor, path)
         for future in concurrent.futures.as_completed(future_to_file):
             f = future_to_file[future]
