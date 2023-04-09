@@ -31,12 +31,15 @@ import subprocess
 def get_ref_md5(fn):
     dir = dirname(fn)
     name = basename(fn)
-    checksum = os.path.join(dir, "md5.txt")
-    o = subprocess.run(["grep", "  " + name, checksum], capture_output=True)
-    if o.returncode:
+    checksums_path = os.path.join(dir, "md5.txt")
+    try:
+        with open(checksums_path) as checksums_file:
+            checksums = checksums_file.readlines()
+        checksums = filter(lambda l: l.endswith(name + "\n"), checksums)
+        checksum = next(checksums)
+        return checksum.split()[0]
+    except (FileNotFoundError, StopIteration):
         return None
-    o = o.stdout.decode()
-    return o.replace("  " + name, "").strip()
 
 
 def get_md5(input, ffmpeg_path):
