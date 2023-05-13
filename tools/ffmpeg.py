@@ -35,7 +35,7 @@ def get_ref_md5(fn):
     try:
         with open(checksums_path) as checksums_file:
             checksums = checksums_file.readlines()
-        checksums = filter(lambda l: l.endswith(name + "\n"), checksums)
+        checksums = filter(lambda l: l.endswith("  " + name + "\n"), checksums)
         checksum = next(checksums)
         return checksum.split()[0]
     except (FileNotFoundError, StopIteration):
