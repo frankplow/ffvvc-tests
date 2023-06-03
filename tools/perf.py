@@ -65,7 +65,7 @@ class PerformanceRunner(TestRunner):
         self.__print_summary()
 
     def add_args(self, parser):
-        parser.add_argument("--vvdec-path", type=str)
+        parser.add_argument("--vvdec-path", type=str, required=True)
 
     def __get_app(self):
         if self.args.vvdec_path:
