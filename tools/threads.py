@@ -55,10 +55,13 @@ class ThreadRunner(TestRunner):
         self.__print_summary()
 
     def add_args(self, parser):
+        parser.add_argument("--openvvc-path", type=str)
         parser.add_argument("--vvdec-path", type=str)
         parser.add_argument("--csv", action="store_true")
 
     def __get_app(self):
+        if self.args.openvvc_path:
+            return OpenVVCApp(self.args.openvvc_path)
         if self.args.vvdec_path:
             return VVDecApp(self.args.vvdec_path)
         return FFmpegApp(self.args.ffmpeg_path)
@@ -67,7 +70,7 @@ class ThreadRunner(TestRunner):
         fn = os.path.basename(input)
         self.runs = []
 
-        for asm, threads in product([True, False], [1, 2, 4, 8, 16]):
+        for asm, threads in product([True, False], range(1, 12 + 1)):
             self.__app.set_asm(asm)
             self.__app.set_threads(threads)
             cmd = self.__app.get_cmd(input)
@@ -82,7 +85,7 @@ class ThreadRunner(TestRunner):
                 print(e)
                 raise
 
-            run = ThreadTestRun("vvdec" if self.args.vvdec_path else "ffvvc", fn, threads, asm, o)
+            run = ThreadTestRun(self.__app.get_name(), fn, threads, asm, o)
             self.runs.append(run)
 
     def __print_summary(self):
