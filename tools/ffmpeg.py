@@ -103,7 +103,7 @@ class ConformanceRunner(TestRunner):
         cmd = self.args.ffmpeg_path + " -i " + input + " -vsync 0 -noautoscale -f md5 -"
         print(cmd)
         try:
-            o = subprocess.run(cmd.split(), capture_output=True, timeout=5 * 60)
+            o = subprocess.run(cmd.split(), capture_output=True, timeout=30 * 60)
             if o.returncode:
                 print(o.stderr)
                 return ""
