@@ -37,7 +37,7 @@ class FFmpegApp(PerfApp):
     def get_cmd(self, input):
         extra = " " if self._asm else " -cpuflags 0"
         extra += " -threads " + str(self._threads) if self._threads else ""
-        cmd = self.__path + extra + " -i " + input + " -vsync 0 -y -f null - "
+        cmd = self.__path + " -strict -2 " + extra + " -i " + input + " -vsync 0 -y -f null - "
         return cmd
     def get_fps(self, o):
         o = re.findall(r'fps=.*?q',o.stderr.decode())[-1]
