@@ -1,2 +1,2 @@
 b2a648da9514ce533aa2c57fedbbaa84  sintel_120.266
-f75c8d3c14dcda99768d7a42268d81dc  tiles_720p5994_stockhold_ter.266
+f75c8d3c14dcda99768d7a42268d81dc  tiles_720p5994_stockholm_ter.266
