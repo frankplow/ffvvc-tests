@@ -117,7 +117,10 @@ class ConformanceRunner(TestRunner):
                     summary[s].append(f)
 
         print_summary(summary, count)
-        sys.exit(count[TestResult.MISMATCH])
+        sys.exit(sum(count[status]
+            for status in count.keys()
+            if status not in [TestResult.PASSED, TestResult.SKIPPED]
+        ))
 
     def add_args(self, parser):
         parser.add_argument("-t", "--threads", type=int, default=16)
