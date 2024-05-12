@@ -59,6 +59,7 @@ def print_summary(summary, count):
     summary[TestResult.MISMATCH].sort(key=lambda x: os.stat(x).st_size)
     print("")
     print("+++++++++ report +++++++++")
+    print_files("passed", summary[TestResult.PASSED])
     print_files("skipped", summary[TestResult.SKIPPED])
     print_files("mismatch", summary[TestResult.MISMATCH])
     print_files("timeout", summary[TestResult.TIMEOUT])
