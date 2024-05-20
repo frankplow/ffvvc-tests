@@ -23,11 +23,14 @@
 import argparse
 import hashlib
 import os
+from urllib.parse import urlparse
 import urllib.request
 import yaml
 import tqdm
 
 class TestRunner:
+    SUPPORTED_EXTENSIONS = [".bin", ".bit", ".vvc", ".266", ".ts"]
+
     def check_input(self):
         parser = argparse.ArgumentParser(description="FFVVC test runner")
 
@@ -82,7 +85,7 @@ class TestRunner:
         if os.path.isfile(path):
             filename, ext = os.path.splitext(path)
             if ext == ".yaml":
-                return [filename + ext for ext in [".bin", ".bit", ".vvc", ".266"] if os.path.isfile(filename + ext)]
+                return [filename + ext for ext in TestRunner.SUPPORTED_EXTENSIONS if os.path.isfile(filename + ext)]
             else:
                 return [path]
         else:
@@ -94,7 +97,7 @@ class TestRunner:
     def is_candidiate(f):
         filename, ext = os.path.splitext(f)
         ext = ext.lower()
-        supported = [".bin", ".bit", ".vvc", ".266"]
+        supported = TestRunner.SUPPORTED_EXTENSIONS
         return ext in supported
 
     @staticmethod
@@ -104,9 +107,11 @@ class TestRunner:
 
     @staticmethod
     def download(file):
-        dest = file + ".bit"
         cfg = TestRunner.get_cfg(file)
         url = cfg["url"]
+        urlpath = urlparse(url).path
+        ext = urlpath.rsplit(".", 1)[-1] if "." in urlpath else "bit"
+        dest = file + "." + ext
         pbar = tqdm.tqdm(desc=f"Downloading {dest}",
                          unit="B", unit_scale=True, miniters=1, dynamic_ncols=True)
         def update_bar(blocknum, blocksize, totalsize):
@@ -121,7 +126,7 @@ class TestRunner:
         files = [os.path.splitext(f)[0] for f in files]
 
         for f in files:
-            for ext in [".bin", ".bit", ".vvc", ".266"]:
+            for ext in TestRunner.SUPPORTED_EXTENSIONS:
                 if os.path.isfile(f + ext):
                     src = f + ext
                     break
