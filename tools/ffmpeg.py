@@ -133,7 +133,7 @@ class ConformanceRunner(TestRunner):
             self.args.ffmpeg_path
             + " -strict -2 -i "
             + input_stream
-            + " -vsync 0 -noautoscale -f md5 -"
+            + " -vsync 0 -noautoscale -an -map 0:v:0 -f md5 -"
         )
 
     @staticmethod
